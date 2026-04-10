@@ -162,7 +162,7 @@ public partial class ControlPanelWindow : Window
     {
         NavStatesBtn.Tag = null;
         NavSettingsBtn.Tag = "Active";
-        ContentFrame.Navigate(new SettingsPage(_config, _gameLoop));
+        ContentFrame.Navigate(new SettingsPage(_fsm, _config, _gameLoop));
     }
 
     /// <summary>

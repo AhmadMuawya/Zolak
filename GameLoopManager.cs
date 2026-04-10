@@ -108,6 +108,16 @@ public class GameLoopManager
     public void Stop() => _timer.Stop();
 
     /// <summary>
+    /// Resets animation state to avoid frame index mismatch during reloads.
+    /// </summary>
+    public void ResetAnimation()
+    {
+        _frameIndex = 0;
+        _frameTimer = 0;
+        _lastState = PetState.Idle; // default to reset
+    }
+
+    /// <summary>
     /// Called from MainWindow after DragMove ends to trigger gravity.
     /// </summary>
     public void OnDropped(double newX, double newY)

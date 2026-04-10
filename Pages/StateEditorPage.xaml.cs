@@ -18,6 +18,7 @@ public partial class StateEditorPage : Page
     private readonly PetFSM _fsm;
     private readonly ZolakConfig _config;
     private readonly string _stateName;
+    private readonly string _targetCharacter;
 
     // Frame file paths (working copy – persisted on Save)
     private readonly List<string> _framePaths = new();
@@ -27,14 +28,15 @@ public partial class StateEditorPage : Page
     private readonly DispatcherTimer _previewTimer;
     private int _previewIndex;
 
-    public StateEditorPage(PetFSM fsm, ZolakConfig config, string stateName)
+    public StateEditorPage(PetFSM fsm, ZolakConfig config, string stateName, string characterName)
     {
         _fsm = fsm;
         _config = config;
         _stateName = stateName;
+        _targetCharacter = characterName;
 
         InitializeComponent();
-        StateTitleText.Text = stateName;
+        StateTitleText.Text = $"{characterName} - {stateName}";
 
         _previewTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(120) };
         _previewTimer.Tick += PreviewTimer_Tick;
@@ -72,7 +74,7 @@ public partial class StateEditorPage : Page
     {
         string assetsRoot = Path.Combine(
             AppDomain.CurrentDomain.BaseDirectory, "Assets", "sprites");
-        return Path.Combine(assetsRoot, AssetManager.Instance.CurrentCharacter, _stateName);
+        return Path.Combine(assetsRoot, _targetCharacter, _stateName);
     }
 
     private static BitmapImage LoadBitmap(string filePath)
@@ -346,7 +348,7 @@ public partial class StateEditorPage : Page
         _framePaths.Clear();
         for (int i = 0; i < tempPaths.Count; i++)
         {
-            string finalName = $"{AssetManager.Instance.CurrentCharacter}_{_stateName}_{i + 1:D3}.png";
+            string finalName = $"{_targetCharacter}_{_stateName}_{i + 1:D3}.png";
             string finalPath = Path.Combine(stateDir, finalName);
             if (File.Exists(tempPaths[i]))
             {

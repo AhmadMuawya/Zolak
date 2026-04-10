@@ -78,10 +78,6 @@ public class PetFSM
 
     // ── Public API ─────────────────────────────────────────────────────
 
-    /// <summary>
-    /// Loads configuration from a ZolakConfig instance.
-    /// Can be called at any time to hot-reload settings.
-    /// </summary>
     public void LoadConfig(ZolakConfig config)
     {
         _boredThreshold = config.BoredThresholdMinutes * 60.0;
@@ -129,6 +125,18 @@ public class PetFSM
         if (hoverEnter.HasValue) _hoverEnterState = hoverEnter.Value;
         if (hoverLeave.HasValue) _hoverLeaveState = hoverLeave.Value;
         if (inactivity.HasValue) _inactivityState = inactivity.Value;
+    }
+
+    /// <summary>
+    /// Resets the brain to a clean Idle state.
+    /// Used when switching characters or reloading.
+    /// </summary>
+    public void Reset()
+    {
+        _inactivityTimer = 0;
+        _teaseTimerActive = false;
+        _teaseCooldown = 0;
+        TransitionTo(PetState.Idle);
     }
 
     /// <summary>

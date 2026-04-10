@@ -17,19 +17,11 @@ Once you have your frames, they need to be cleaned up for the transparent engine
 1.  **Background Removal**: Upload your frames to [**bgsweep.com**](https://bgsweep.com/) for instant bulk background removal.
 2.  **Uniform Cropping**: Use [**bulkimagecrop.com**](https://bulkimagecrop.com/) to ensure all frames for a specific state have identical dimensions. This prevents "jittering" during animation.
 
-### 📂 Phase 3: Integration
-Drop your processed frames into the assets folder using this structure:
-```text
-Assets/sprites/
-└── {YourCharacterName}/
-    ├── Idle/
-    │   ├── 1.png
-    │   └── 2.png...
-    ├── Walk/
-    ├── Run/
-    └── Angry/
-```
-*The engine will automatically detect and load your new character into the system tray menu!*
+### 📂 Phase 3: Integration (Control Panel Method)
+1.  Open the **Control Panel** → **Settings**.
+2.  Click the **+ (Plus)** button next to the character dropdown.
+3.  Enter your pet's name. Zolak will automatically clone **Karkoor** as a template to ensure your new pet has all the necessary state folders.
+4.  Navigate to **States** and use the **State Editor** to replace the template frames with your own!
 
 ---
 
@@ -45,7 +37,7 @@ dotnet run
 ```
 
 ### Create a Single-File Executable
-Run the included PowerShell script to create a portable `.exe` that you can share with friends:
+Run the included PowerShell script to create a portable `.exe`:
 ```powershell
 ./build_exe.ps1
 ```
@@ -56,21 +48,18 @@ Run the included PowerShell script to create a portable `.exe` that you can shar
 
 Zolak includes a built-in **VS Code-style Control Panel** for real-time configuration—no code editing required.
 
-### Opening
-Right-click the system tray icon → **Control Panel**, or click the character name in the status bar.
-
 ### Features
 | Page | What you can do |
 | :--- | :--- |
-| **States** | Adjust state probabilities, min/max durations, and hover effects. Click the ✏️ pencil to edit any state's frame sequence. |
-| **State Editor** | Drag-and-drop to reorder frames, add new PNGs, delete frames, and preview the animation in real-time. Hit **Save** to persist changes. |
-| **Settings** | Change character, pet size, animation speed, gravity, bored threshold, and startup behavior—all with live sliders. |
+| **States** | Adjust state probabilities, durations, and hover effects. Click ✏️ to edit frames for the **current active character**. |
+| **State Editor** | Safe drag-and-drop frame reordering. Locks to your target character so background switches won't interrupt your work. |
+| **Settings** | Character management (Add/Delete), pet size, physics, and startup behavior. |
+| **Factory Reset** | Revert all configurations and custom characters to original defaults. |
 
-### Theme
-Toggle between **Dark Mode** and **Light Mode** from the sidebar. Your preference is saved to `zolak-config.json`.
-
-### Runtime Config
-All settings are stored in `Config/zolak-config.json` and loaded dynamically at startup. Changes apply instantly without rebuilding.
+### Character Management
+*   **Add (+)**: Clones a template structure for a new character instantly.
+*   **Delete (🗑️)**: Removes custom character folders from your disk. (Original characters **Ahmad, Karkoor, and Za3tar** are protected).
+*   **Status Bar**: Click the character name in the bottom-left of the Control Panel to quickly cycle through available pets.
 
 ---
 
@@ -81,17 +70,13 @@ Zolak is built on a strictly decoupled architecture, separating the visual shell
 ### 1. The "Brain" (Finite State Machine)
 The `PetFSM.cs` handles all logic independently of the frame rate. It operates in three distinct modes:
 *   **Mode A (Autonomous)**: Randomly switches between `Idle`, `Sit`, `Walk`, and `Run` based on weighted RNG.
-*   **Mode B (Interactive)**: Triggers `Angry` or `Tease` states when the mouse interacts with the pet.
-*   **Mode C (Neglect)**: After 5 minutes of inactivity, Zolak enters a `Bored` state until manually awoken.
+*   **Mode B (Interactive)**: Triggers `Hover` or `Exit` states when the mouse interacts with the pet.
+*   **Mode C (Neglect)**: After a configurable threshold, Zolak enters a `Bored` state until manually awoken.
 
 ### 2. The "Body" (WPF Shell)
 *   **Transparency**: Uses `AllowsTransparency="True"` and `Background="Transparent"` for a pixel-only feel.
-*   **Physics**: Implements a gravity system that kicks in after a `DragMove()` concludes, ensuring the pet falls back to the taskbar "floor".
-*   **DPI Awareness**: Automatically calculates screen bounds based on the primary monitor's working area.
-
-### 3. Asset Management & Optimization
-*   **RAM Caching**: `AssetManager.cs` preloads all `BitmapImage` instances into RAM on startup to eliminate disk lag during state transitions.
-*   **Frame Flipping**: To save space, we only store right-facing assets and use programmatic `ScaleTransform` flipping for left-facing movement.
+*   **Physics**: Implements a gravity system that kicks in after a drag concludes, ensuring the pet falls to the floor.
+*   **Atomic Reloads**: Assets are swapped atomically in memory, ensuring no flickers or "missing state" crashes during real-time edits.
 
 ---
 
@@ -99,20 +84,16 @@ The `PetFSM.cs` handles all logic independently of the frame rate. It operates i
 
 | File | Purpose |
 | :--- | :--- |
-| **`GameLoopManager.cs`** | The heartbeat. Runs at 60 ticks/s to query the FSM and update physics. |
-| **`AssetManager.cs`** | Singleton preloader for character sprite dictionaries. |
+| **`GameLoopManager.cs`** | The 60 fps heartbeat. Updates physics and queries the FSM. |
+| **`AssetManager.cs`** | Atomic asset cache. Handles multi-character loading and memory-safe swaps. |
 | **`PetFSM.cs`** | Pure C# logic handling state transitions and RNG movement. |
-| **`MainWindow.xaml`** | The visual layer and system tray integration. |
-| **`PetState.cs`** | Defines the available behavior states (Walk, Run, Angry, etc.). |
-| **`ControlPanelWindow.xaml`** | VS Code-style control panel with sidebar, themes, and dot canvas. |
-| **`Pages/StatesPage.xaml`** | State config table and animated preview cards. |
-| **`Pages/StateEditorPage.xaml`** | Frame sequence editor with drag-drop and live preview. |
-| **`Pages/SettingsPage.xaml`** | Pet behavior and appearance settings with slider+input controls. |
-| **`ZolakConfig.cs`** | Runtime configuration POCO model. |
-| **`ConfigManager.cs`** | JSON load/save for `zolak-config.json`. |
-| **`Themes/`** | Dark.xaml and Light.xaml VS Code-inspired theme dictionaries. |
+| **`MainWindow.xaml`** | The visual pet window and system tray integration. |
+| **`ControlPanelWindow.xaml`** | The main dashboard with navigation, status bar, and themes. |
+| **`Pages/`** | Contains `StatesPage`, `StateEditorPage`, and `SettingsPage`. |
+| **`Config/`** | Runtime JSON configuration management. |
+| **`Themes/`** | Dark and Light XAML theme dictionaries. |
 
 ---
 
 > [!TIP]
-> **Pro Tip**: Use the System Tray icon to hot-swap characters, or click the character name in the Control Panel status bar to cycle through them!
+> **Pro Tip**: If you mess up your settings or characters, use the **Factory Reset** button in Settings to return Zolak to its original state!

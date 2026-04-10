@@ -280,7 +280,7 @@ public partial class StatesPage : Page
         if (sender is Button btn && btn.Tag is StateConfig sc)
         {
             var cpWindow = Window.GetWindow(this) as ControlPanelWindow;
-            cpWindow?.NavigateToPage(new StateEditorPage(_fsm, _config, sc.Name));
+            cpWindow?.NavigateToPage(new StateEditorPage(_fsm, _config, sc.Name, AssetManager.Instance.CurrentCharacter));
         }
     }
 

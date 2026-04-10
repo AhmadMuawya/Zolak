@@ -36,7 +36,7 @@ public sealed class AssetManager
     /// </summary>
     public void LoadAll(string assetsRootPath)
     {
-        _characters.Clear();
+        var newCharacters = new Dictionary<string, Dictionary<string, List<BitmapImage>>>();
         _assetsRoot = assetsRootPath;
 
         if (!Directory.Exists(assetsRootPath))
@@ -72,11 +72,18 @@ public sealed class AssetManager
             }
 
             if (stateCache.Count > 0)
-                _characters[charName] = stateCache;
+                newCharacters[charName] = stateCache;
         }
 
-        // Default to the first character found
-        if (_characters.Count > 0)
+        // Swaps are atomic in C# for object references
+        _characters.Clear();
+        foreach (var kvp in newCharacters)
+        {
+            _characters[kvp.Key] = kvp.Value;
+        }
+
+        // Default to the first character found if current is empty or missing
+        if (_characters.Count > 0 && (string.IsNullOrEmpty(_currentCharacter) || !_characters.ContainsKey(_currentCharacter)))
             _currentCharacter = _characters.Keys.First();
     }
 

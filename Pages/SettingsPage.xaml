@@ -23,24 +23,67 @@
                  CHARACTER SELECTION
                  ═══════════════════════════════════════════════════════════ -->
             <Border Style="{DynamicResource StateCard}" Padding="16" Margin="0,0,0,12">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
-                    <StackPanel Grid.Column="0" Margin="0,0,16,0">
-                        <TextBlock Text="Character" FontSize="13" FontWeight="SemiBold"
-                                   Foreground="{DynamicResource TextPrimary}"/>
-                        <TextBlock Text="Select the active pet character."
-                                   FontSize="11" Foreground="{DynamicResource TextSecondary}"
-                                   Margin="0,2,0,0" TextWrapping="NoWrap"
-                                   TextTrimming="CharacterEllipsis"/>
-                    </StackPanel>
-                    <ComboBox x:Name="CharacterCombo" Grid.Column="1"
-                              Style="{DynamicResource VsComboBox}"
-                              Width="150" VerticalAlignment="Center"
-                              SelectionChanged="CharacterCombo_SelectionChanged"/>
-                </Grid>
+                <StackPanel>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0" Margin="0,0,16,0">
+                            <TextBlock Text="Character" FontSize="13" FontWeight="SemiBold"
+                                       Foreground="{DynamicResource TextPrimary}"/>
+                            <TextBlock Text="Select the active pet character."
+                                       FontSize="11" Foreground="{DynamicResource TextSecondary}"
+                                       Margin="0,2,0,0" TextWrapping="NoWrap"
+                                       TextTrimming="CharacterEllipsis"/>
+                        </StackPanel>
+                        <ComboBox x:Name="CharacterCombo" Grid.Column="1"
+                                  Style="{DynamicResource VsComboBox}"
+                                  Width="150" VerticalAlignment="Center"
+                                  SelectionChanged="CharacterCombo_SelectionChanged"/>
+                        <Button x:Name="AddCharBtn" Grid.Column="2"
+                                Style="{DynamicResource VsGhostButton}"
+                                Click="AddCharBtn_Click" Margin="6,0,0,0"
+                                VerticalAlignment="Center" ToolTip="Add new character"
+                                Padding="4">
+                            <Path Data="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z"
+                                  Width="14" Height="14" Stretch="Uniform"
+                                  Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"/>
+                        </Button>
+                        <Button x:Name="DeleteCharBtn" Grid.Column="3"
+                                Style="{DynamicResource VsGhostButton}"
+                                Click="DeleteCharBtn_Click" Margin="4,0,0,0"
+                                VerticalAlignment="Center" ToolTip="Delete character"
+                                Padding="4" Foreground="{DynamicResource DangerColor}"
+                                Visibility="Collapsed">
+                            <Path Data="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19V4M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z"
+                                  Width="14" Height="14" Stretch="Uniform"
+                                  Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"/>
+                        </Button>
+                    </Grid>
+                    <!-- Inline name input (hidden by default) -->
+                    <Grid x:Name="NewCharPanel" Visibility="Collapsed" Margin="0,10,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBox x:Name="NewCharNameBox" Grid.Column="0"
+                                 Style="{DynamicResource VsTextBox}"
+                                 FontSize="12" VerticalAlignment="Center"
+                                 Tag="Enter character name..."/>
+                        <Button x:Name="ConfirmCharBtn" Grid.Column="1"
+                                Style="{DynamicResource VsButton}"
+                                Content="Create" Padding="12,5"
+                                Margin="6,0,0,0" Click="ConfirmChar_Click"/>
+                        <Button Grid.Column="2"
+                                Style="{DynamicResource VsGhostButton}"
+                                Content="✕" Padding="6,5"
+                                Margin="4,0,0,0" Click="CancelChar_Click"/>
+                    </Grid>
+                </StackPanel>
             </Border>
 
             <!-- ═══════════════════════════════════════════════════════════
@@ -204,6 +247,27 @@
 
             <!-- Bottom spacer -->
             <Border Height="20"/>
+            <!-- ═══════════════════════════════════════════════════════════
+                 FACTORY RESET (DANGER ZONE)
+                 ═══════════════════════════════════════════════════════════ -->
+            <Border BorderBrush="{DynamicResource DangerColor}" BorderThickness="1" 
+                    CornerRadius="4" Padding="16" Margin="0,24,0,12"
+                    Opacity="0.8">
+                <StackPanel>
+                    <TextBlock Text="Danger Zone" FontSize="13" FontWeight="Bold"
+                               Foreground="{DynamicResource DangerColor}"/>
+                    <TextBlock Text="Revert all configurations, character settings, and custom characters to their factory defaults. This action is irreversible."
+                               FontSize="11" Foreground="{DynamicResource TextSecondary}"
+                               Margin="0,4,0,12" TextWrapping="Wrap"/>
+                    <Button x:Name="ResetBtn" Content="Factory Reset" 
+                            Style="{DynamicResource VsButton}"
+                            Background="Transparent"
+                            BorderBrush="{DynamicResource DangerColor}"
+                            Foreground="{DynamicResource DangerColor}"
+                            Padding="12,6" HorizontalAlignment="Left"
+                            Click="ResetBtn_Click"/>
+                </StackPanel>
+            </Border>
         </StackPanel>
     </ScrollViewer>
 </Page>
