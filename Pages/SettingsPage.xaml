@@ -1,0 +1,209 @@
+<Page x:Class="WaysToSnooze.Zolak.Pages.SettingsPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      Background="Transparent"
+      FontFamily="Segoe UI Variable, Segoe UI">
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled"
+                  Margin="24,20">
+        <StackPanel MaxWidth="600" HorizontalAlignment="Left">
+
+            <!-- ═══════════════════════════════════════════════════════════
+                 HEADER
+                 ═══════════════════════════════════════════════════════════ -->
+            <TextBlock Text="Settings"
+                       FontSize="22" FontWeight="SemiBold"
+                       Foreground="{DynamicResource TextPrimary}"
+                       Margin="0,0,0,4"/>
+            <TextBlock Text="Customize your Zolak desktop pet behavior and appearance."
+                       FontSize="12" Foreground="{DynamicResource TextSecondary}"
+                       Margin="0,0,0,24"/>
+
+            <!-- ═══════════════════════════════════════════════════════════
+                 CHARACTER SELECTION
+                 ═══════════════════════════════════════════════════════════ -->
+            <Border Style="{DynamicResource StateCard}" Padding="16" Margin="0,0,0,12">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0" Margin="0,0,16,0">
+                        <TextBlock Text="Character" FontSize="13" FontWeight="SemiBold"
+                                   Foreground="{DynamicResource TextPrimary}"/>
+                        <TextBlock Text="Select the active pet character."
+                                   FontSize="11" Foreground="{DynamicResource TextSecondary}"
+                                   Margin="0,2,0,0" TextWrapping="NoWrap"
+                                   TextTrimming="CharacterEllipsis"/>
+                    </StackPanel>
+                    <ComboBox x:Name="CharacterCombo" Grid.Column="1"
+                              Style="{DynamicResource VsComboBox}"
+                              Width="150" VerticalAlignment="Center"
+                              SelectionChanged="CharacterCombo_SelectionChanged"/>
+                </Grid>
+            </Border>
+
+            <!-- ═══════════════════════════════════════════════════════════
+                 PET SIZE
+                 ═══════════════════════════════════════════════════════════ -->
+            <Border Style="{DynamicResource StateCard}" Padding="16" Margin="0,0,0,12">
+                <StackPanel>
+                    <Grid>
+                        <TextBlock Text="Pet Size" FontSize="13" FontWeight="SemiBold"
+                                   Foreground="{DynamicResource TextPrimary}"/>
+                        <TextBlock x:Name="PetSizeValueLabel"
+                                   HorizontalAlignment="Right"
+                                   FontSize="12" Foreground="{DynamicResource AccentColor}"/>
+                    </Grid>
+                    <TextBlock Text="Scale the pet sprite size in pixels (32–192)."
+                               FontSize="11" Foreground="{DynamicResource TextSecondary}"
+                               Margin="0,2,0,8"/>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="60"/>
+                        </Grid.ColumnDefinitions>
+                        <Slider x:Name="PetSizeSlider" Grid.Column="0"
+                                Style="{DynamicResource VsSlider}"
+                                Minimum="32" Maximum="192"
+                                TickFrequency="8" IsSnapToTickEnabled="True"
+                                ValueChanged="PetSizeSlider_ValueChanged"/>
+                        <TextBox x:Name="PetSizeTextBox" Grid.Column="1"
+                                 Style="{DynamicResource VsTextBox}"
+                                 Margin="8,0,0,0"
+                                 HorizontalContentAlignment="Center"
+                                 LostFocus="PetSizeTextBox_LostFocus"/>
+                    </Grid>
+                </StackPanel>
+            </Border>
+
+            <!-- ═══════════════════════════════════════════════════════════
+                 ANIMATION SPEED
+                 ═══════════════════════════════════════════════════════════ -->
+            <Border Style="{DynamicResource StateCard}" Padding="16" Margin="0,0,0,12">
+                <StackPanel>
+                    <Grid>
+                        <TextBlock Text="Animation Speed" FontSize="13" FontWeight="SemiBold"
+                                   Foreground="{DynamicResource TextPrimary}"/>
+                        <TextBlock x:Name="AnimSpeedValueLabel"
+                                   HorizontalAlignment="Right"
+                                   FontSize="12" Foreground="{DynamicResource AccentColor}"/>
+                    </Grid>
+                    <TextBlock Text="Frame rate multiplier (0.5x = slow, 2.0x = fast)."
+                               FontSize="11" Foreground="{DynamicResource TextSecondary}"
+                               Margin="0,2,0,8"/>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="60"/>
+                        </Grid.ColumnDefinitions>
+                        <Slider x:Name="AnimSpeedSlider" Grid.Column="0"
+                                Style="{DynamicResource VsSlider}"
+                                Minimum="0.5" Maximum="3.0"
+                                TickFrequency="0.1" IsSnapToTickEnabled="True"
+                                ValueChanged="AnimSpeedSlider_ValueChanged"/>
+                        <TextBox x:Name="AnimSpeedTextBox" Grid.Column="1"
+                                 Style="{DynamicResource VsTextBox}"
+                                 Margin="8,0,0,0"
+                                 HorizontalContentAlignment="Center"
+                                 LostFocus="AnimSpeedTextBox_LostFocus"/>
+                    </Grid>
+                </StackPanel>
+            </Border>
+
+            <!-- ═══════════════════════════════════════════════════════════
+                 GRAVITY
+                 ═══════════════════════════════════════════════════════════ -->
+            <Border Style="{DynamicResource StateCard}" Padding="16" Margin="0,0,0,12">
+                <StackPanel>
+                    <Grid>
+                        <TextBlock Text="Gravity Strength" FontSize="13" FontWeight="SemiBold"
+                                   Foreground="{DynamicResource TextPrimary}"/>
+                        <TextBlock x:Name="GravityValueLabel"
+                                   HorizontalAlignment="Right"
+                                   FontSize="12" Foreground="{DynamicResource AccentColor}"/>
+                    </Grid>
+                    <TextBlock Text="Physics strength after drag-and-drop (px/s²)."
+                               FontSize="11" Foreground="{DynamicResource TextSecondary}"
+                               Margin="0,2,0,8"/>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="60"/>
+                        </Grid.ColumnDefinitions>
+                        <Slider x:Name="GravitySlider" Grid.Column="0"
+                                Style="{DynamicResource VsSlider}"
+                                Minimum="200" Maximum="2000"
+                                TickFrequency="50" IsSnapToTickEnabled="True"
+                                ValueChanged="GravitySlider_ValueChanged"/>
+                        <TextBox x:Name="GravityTextBox" Grid.Column="1"
+                                 Style="{DynamicResource VsTextBox}"
+                                 Margin="8,0,0,0"
+                                 HorizontalContentAlignment="Center"
+                                 LostFocus="GravityTextBox_LostFocus"/>
+                    </Grid>
+                </StackPanel>
+            </Border>
+
+            <!-- ═══════════════════════════════════════════════════════════
+                 BORED THRESHOLD
+                 ═══════════════════════════════════════════════════════════ -->
+            <Border Style="{DynamicResource StateCard}" Padding="16" Margin="0,0,0,12">
+                <StackPanel>
+                    <Grid>
+                        <TextBlock Text="Bored Threshold" FontSize="13" FontWeight="SemiBold"
+                                   Foreground="{DynamicResource TextPrimary}"/>
+                        <TextBlock x:Name="BoredValueLabel"
+                                   HorizontalAlignment="Right"
+                                   FontSize="12" Foreground="{DynamicResource AccentColor}"/>
+                    </Grid>
+                    <TextBlock Text="Minutes of inactivity before neglect mode activates."
+                               FontSize="11" Foreground="{DynamicResource TextSecondary}"
+                               Margin="0,2,0,8"/>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="60"/>
+                        </Grid.ColumnDefinitions>
+                        <Slider x:Name="BoredSlider" Grid.Column="0"
+                                Style="{DynamicResource VsSlider}"
+                                Minimum="1" Maximum="30"
+                                TickFrequency="1" IsSnapToTickEnabled="True"
+                                ValueChanged="BoredSlider_ValueChanged"/>
+                        <TextBox x:Name="BoredTextBox" Grid.Column="1"
+                                 Style="{DynamicResource VsTextBox}"
+                                 Margin="8,0,0,0"
+                                 HorizontalContentAlignment="Center"
+                                 LostFocus="BoredTextBox_LostFocus"/>
+                    </Grid>
+                </StackPanel>
+            </Border>
+
+            <!-- ═══════════════════════════════════════════════════════════
+                 RUN ON STARTUP
+                 ═══════════════════════════════════════════════════════════ -->
+            <Border Style="{DynamicResource StateCard}" Padding="16" Margin="0,0,0,12">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0">
+                        <TextBlock Text="Run on Startup" FontSize="13" FontWeight="SemiBold"
+                                   Foreground="{DynamicResource TextPrimary}"/>
+                        <TextBlock Text="Launch Zolak automatically when Windows starts."
+                                   FontSize="11" Foreground="{DynamicResource TextSecondary}"
+                                   Margin="0,2,0,0"/>
+                    </StackPanel>
+                    <CheckBox x:Name="StartupCheckBox" Grid.Column="1"
+                              VerticalAlignment="Center"
+                              Checked="StartupCheckBox_Changed"
+                              Unchecked="StartupCheckBox_Changed"/>
+                </Grid>
+            </Border>
+
+            <!-- Bottom spacer -->
+            <Border Height="20"/>
+        </StackPanel>
+    </ScrollViewer>
+</Page>

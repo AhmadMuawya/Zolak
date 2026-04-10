@@ -1,0 +1,87 @@
+<Page x:Class="WaysToSnooze.Zolak.Pages.StateEditorPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      Background="Transparent"
+      FontFamily="Segoe UI Variable, Segoe UI">
+
+    <Grid Margin="24,20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>  <!-- Header -->
+            <RowDefinition Height="*"/>     <!-- Content -->
+        </Grid.RowDefinitions>
+
+        <!-- ═══════════════════════════════════════════════════════════
+             HEADER BAR
+             ═══════════════════════════════════════════════════════════ -->
+        <Grid Grid.Row="0" Margin="0,0,0,16">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center">
+                <!-- Back arrow only -->
+                <Button x:Name="BackBtn" Style="{DynamicResource VsGhostButton}"
+                        Click="BackBtn_Click" Padding="6"
+                        ToolTip="Back to States">
+                    <Path Data="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z"
+                          Width="18" Height="18" Stretch="Uniform"
+                          Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"/>
+                </Button>
+                <!-- State name title -->
+                <TextBlock x:Name="StateTitleText" Text="State Name"
+                           FontSize="20" FontWeight="SemiBold" Margin="10,0,0,0"
+                           Foreground="{DynamicResource TextPrimary}"
+                           VerticalAlignment="Center"/>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button x:Name="AddFrameBtn" Style="{DynamicResource VsGhostButton}"
+                        Click="AddFrame_Click" Margin="0,0,8,0" ToolTip="Add frame images">
+                    <StackPanel Orientation="Horizontal">
+                        <Path Data="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z"
+                              Width="14" Height="14" Stretch="Uniform"
+                              Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"/>
+                        <TextBlock Text="  Add" VerticalAlignment="Center" FontSize="11"/>
+                    </StackPanel>
+                </Button>
+                <Button x:Name="SaveBtn" Style="{DynamicResource VsButton}"
+                        Click="SaveBtn_Click" Content="Save" Padding="16,6"/>
+            </StackPanel>
+        </Grid>
+
+        <!-- ═══════════════════════════════════════════════════════════
+             CONTENT: FRAME TILES + LIVE PREVIEW
+             ═══════════════════════════════════════════════════════════ -->
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>      <!-- Frame tiles -->
+                <ColumnDefinition Width="Auto"/>   <!-- Preview panel -->
+            </Grid.ColumnDefinitions>
+
+            <!-- ── Frame Tiles (scrollable, drag-and-drop) ──────────── -->
+            <ScrollViewer Grid.Column="0" VerticalScrollBarVisibility="Auto"
+                          HorizontalScrollBarVisibility="Disabled"
+                          Margin="0,0,12,0">
+                <WrapPanel x:Name="TilesPanel" Orientation="Horizontal"
+                           AllowDrop="True"
+                           DragOver="TilesPanel_DragOver"
+                           Drop="TilesPanel_Drop"/>
+            </ScrollViewer>
+
+            <!-- ── Live Preview Panel ───────────────────────────────── -->
+            <Border Grid.Column="1" Width="140"
+                    Style="{DynamicResource StateCard}"
+                    Padding="10" VerticalAlignment="Top">
+                <StackPanel HorizontalAlignment="Center">
+                    <TextBlock Text="Preview" FontSize="11" FontWeight="SemiBold"
+                               Foreground="{DynamicResource TextSecondary}"
+                               HorizontalAlignment="Center" Margin="0,0,0,8"/>
+                    <Border Background="{DynamicResource PanelBackground}"
+                            CornerRadius="6" Padding="8" Margin="0,0,0,6">
+                        <Image x:Name="PreviewImage" Width="80" Height="80"
+                               RenderTransformOrigin="0.5,0.5"/>
+                    </Border>
+                    <TextBlock x:Name="FrameCountLabel" Text="0 frames"
+                               FontSize="10" Foreground="{DynamicResource TextSecondary}"
+                               HorizontalAlignment="Center"/>
+                </StackPanel>
+            </Border>
+        </Grid>
+    </Grid>
+</Page>

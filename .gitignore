@@ -1,0 +1,31 @@
+# ── Build outputs ──────────────────────────────────────────
+bin/
+obj/
+Binaries/
+
+# ── IDE / Editor ───────────────────────────────────────────
+.vs/
+.vscode/
+*.user
+*.suo
+*.csproj.user
+*.sln.docstates
+
+# ── WPF temp files ─────────────────────────────────────────
+*_wpftmp.csproj
+
+# ── Runtime config (regenerated on first launch) ───────────
+Config/zolak-config.json
+
+# ── OS junk ────────────────────────────────────────────────
+Thumbs.db
+desktop.ini
+.DS_Store
+
+# ── NuGet ──────────────────────────────────────────────────
+*.nupkg
+project.lock.json
+
+# ── Rider / JetBrains ──────────────────────────────────────
+.idea/
+*.sln.iml
