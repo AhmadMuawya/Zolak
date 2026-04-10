@@ -14,7 +14,7 @@ public partial class SettingsPage : Page
     private readonly GameLoopManager _gameLoop;
     private bool _initialized;
 
-    private const string AppName = "AhmadHabibiPet";
+    private const string AppName = "ZolakPet";
 
     public SettingsPage(ZolakConfig config, GameLoopManager gameLoop)
     {

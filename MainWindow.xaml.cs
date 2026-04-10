@@ -21,7 +21,7 @@ public partial class MainWindow : Window
     private ZolakConfig _config;
     private ControlPanelWindow? _controlPanel;
 
-    private const string AppName = "AhmadHabibiPet";
+    private const string AppName = "ZolakPet";
 
     public MainWindow()
     {
@@ -168,7 +168,7 @@ public partial class MainWindow : Window
         {
             Icon = System.Drawing.Icon.ExtractAssociatedIcon(Environment.ProcessPath!),
             Visible = true,
-            Text = "Ahmad Habibi"
+            Text = "Zolak"
         };
 
         var menu = new System.Windows.Forms.ContextMenuStrip();
